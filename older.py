@@ -209,6 +209,7 @@ def json_success(message, **kwargs):
     return Jsonify(message=message, **kwargs)
 
 
+# Finish
 @app.route("/")
 def get_index():
     return json_success(
@@ -242,16 +243,19 @@ def get_logs():
     )
 
 
+# Finish
 @app.route("/system")
 def get_system():
     return json_success("System", system=platform.system())
 
 
+# Finish
 @app.route("/environ")
 def get_environ():
     return json_success("Environment variables", environ=dict(os.environ))
 
 
+# Finish
 @app.route("/path")
 def get_path():
     return json_success("Agent path", filepath=os.path.abspath(__file__))
