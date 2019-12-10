@@ -3,8 +3,8 @@
 
 Linux or macOS
 
-`pyinstaller -F main/agent.py`
+`pyinstaller -F --noconsole main/agent.py`
 
 Windows
 
-`pyinstaller -F .\main\agent.py`
+`pyinstaller -F --noconsole .\main\agent.py`
