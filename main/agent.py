@@ -17,38 +17,49 @@ import sys
 import argparse
 import platform
 
+from io import StringIO
+
 from flask import Flask
 from flask import jsonify
 from flask import make_response
 
 from main.version import AGENT_VERSION
 
+# Create the in-memory "file"
+temp_stdout = StringIO()
+temp_stderr = StringIO()
+
+# Replace default stdout (terminal) with our stream
+sys.stdout = temp_stdout
+sys.stderr = temp_stderr
+
+
 app = Flask(__name__)
 
 
 @app.route('/')
 def get_index():
-    msg = jsonify("Panda Sandbox Agent", version=AGENT_VERSION, filepath=os.path.abspath(__file__))
+    msg = jsonify(message="Panda Sandbox Agent", version=AGENT_VERSION, filepath=os.path.abspath(__file__))
     return make_response(msg, 200)
 
 
 @app.route("/system")
 def get_system():
-    msg = jsonify("System Platform", system=platform.system())
+    msg = jsonify(message="System Platform", system=platform.system())
     return make_response(msg, 200)
 
 
 @app.route("/environ")
 def get_environ():
-    msg = jsonify("Environment variables", environ=dict(os.environ))
+    msg = jsonify(message="Environment variables", environ=dict(os.environ))
     return make_response(msg, 200)
 
 
 @app.route("/logging")
 def get_logging():
-    msg = jsonify("Panda Sandbox Agent logs",
-                  stdout=sys.stdout,
-                  stderr=sys.stderr)
+    msg = jsonify(message="Panda Sandbox Agent logs",
+                  stdout=sys.stdout.getvalue(),
+                  stderr=sys.stderr.getvalue())
     return make_response(msg, 200)
 
 
